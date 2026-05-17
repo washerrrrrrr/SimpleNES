@@ -3,6 +3,9 @@
 #include <sstream>
 #include <string>
 
+bool noUnfocusPause = false;
+
+
 namespace sn
 {
 void parseControllerConf(std::string filepath, std::vector<sf::Keyboard::Key>& p1, std::vector<sf::Keyboard::Key>& p2);
@@ -52,6 +55,7 @@ int main(int argc, char** argv)
                       << "                       This option is mutually exclusive to --width\n"
                       << "-C, --conf             Set the keybindings file's path. The default \n"
                       << "                       keybindings file is keybindings.conf.\n"
+                      << "-p. --nopause          To stop the emulator from pausing on unfocus\n"
                       << std::endl;
             return 0;
         }
@@ -105,6 +109,11 @@ int main(int argc, char** argv)
                 LOG(sn::Error) << "Setting keybindings.conf's path from argument failed" << std::endl;
             ++i;
         }
+        
+        else if (std::strcmp(argv[i], "-p") == 0 || std::strcmp(argv[i], "--nopause") == 0) {
+            noUnfocusPause = true;
+        }
+
         else if (argv[i][0] != '-')
             path = argv[i];
         else
