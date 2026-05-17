@@ -12,7 +12,7 @@
 #include "PictureBus.h"
 
 extern bool noUnfocusPause;
-
+extern int definedFps;
 
 namespace sn
 {
