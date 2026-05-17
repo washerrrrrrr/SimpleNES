@@ -45,7 +45,7 @@ void Emulator::run(std::string rom_path)
 
     m_window.create(sf::VideoMode(NESVideoWidth * m_screenScale, NESVideoHeight * m_screenScale),
                     "SimpleNES",
-                    sf::Style::Titlebar | sf::Style::Close);
+                    sf::Style::Titlebar | sf::Style::Close | sf::Style::Resize);
     m_window.setVerticalSyncEnabled(true);
     m_emulatorScreen.create(NESVideoWidth, NESVideoHeight, m_screenScale, sf::Color::White);
 
