@@ -4,7 +4,7 @@
 #include <string>
 
 bool noUnfocusPause = false;
-
+int definedFps;
 
 namespace sn
 {
@@ -55,7 +55,8 @@ int main(int argc, char** argv)
                       << "                       This option is mutually exclusive to --width\n"
                       << "-C, --conf             Set the keybindings file's path. The default \n"
                       << "                       keybindings file is keybindings.conf.\n"
-                      << "-p. --nopause          To stop the emulator from pausing on unfocus\n"
+                      << "-p, --nopause          To stop the emulator from pausing on unfocus\n"
+                      << "-f, --fps              To play with a customised max fps.\n"
                       << std::endl;
             return 0;
         }
@@ -112,6 +113,16 @@ int main(int argc, char** argv)
         
         else if (std::strcmp(argv[i], "-p") == 0 || std::strcmp(argv[i], "--nopause") == 0) {
             noUnfocusPause = true;
+        }
+        
+        else if (std::strcmp(argv[i], "-f") == 0 || std::strcmp(argv[i], "--fps") == 0) {
+            int fps;
+            std::stringstream ss;
+            if (i + 1 < argc && ss << argv[i + 1] && ss >> fps)
+                definedFps = fps;
+            else
+                LOG(sn::Error) << "Couldn't set custom fps, defaulting to vsync." << std::endl;
+            ++i;
         }
 
         else if (argv[i][0] != '-')
