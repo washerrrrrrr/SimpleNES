@@ -75,8 +75,13 @@ void Emulator::run(std::string rom_path)
             }
             else if (event.type == sf::Event::LostFocus)
             {
-                focus = false;
-                LOG(Info) << "Losing focus; paused." << std::endl;
+                if (noUnfocusPause) 
+                    focus = true;
+                else {
+                    focus = false;
+                    LOG(Info) << "Losing focus; paused." << std::endl;
+                }
+
             }
             else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::F2)
             {
@@ -108,6 +113,7 @@ void Emulator::run(std::string rom_path)
             }
             else if (focus && event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::F4)
             {
+
                 Log::get().setLevel(Info);
             }
             else if (focus && event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::F5)
