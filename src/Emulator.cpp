@@ -22,6 +22,8 @@ Emulator::Emulator()
 
 void Emulator::run(std::string rom_path)
 {
+    emulatorStatsUI ui;
+
     if (!m_cartridge.loadFromFile(rom_path))
         return;
 
@@ -47,7 +49,7 @@ void Emulator::run(std::string rom_path)
                     "SimpleNES",
                     sf::Style::Titlebar | sf::Style::Close | sf::Style::Resize);
 
-    
+
     if (definedFps != 0 || definedFps > 0)
         m_window.setFramerateLimit(definedFps);
     else
@@ -58,12 +60,22 @@ void Emulator::run(std::string rom_path)
     m_lastWakeup  = high_resolution_clock::now();
     m_elapsedTime = m_lastWakeup - m_lastWakeup;
 
+    //For FPS and current rom
+    if(emuStats) {
+        ui.font.loadFromFile("/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf");
+
+        ui.statsText.setFont(ui.font);
+        ui.statsText.setCharacterSize(15);
+        ui.statsText.setPosition(10, 10);
+    }
+
     m_audioPlayer.start();
 
     sf::Event event;
     bool      focus = true, pause = false;
     while (m_window.isOpen())
     {
+
         while (m_window.pollEvent(event))
         {
             if (event.type == sf::Event::Closed ||
@@ -131,6 +143,8 @@ void Emulator::run(std::string rom_path)
 
             // }
 
+
+
         }
 
         if (focus && !pause)
@@ -153,7 +167,20 @@ void Emulator::run(std::string rom_path)
                 m_elapsedTime -= cpu_clock_period_ns;
             }
 
+
             m_window.draw(m_emulatorScreen);
+            ui.frames++;
+
+            if (ui.clock.getElapsedTime().asSeconds() >= 1.0f)
+            {
+                ui.fps = ui.frames;
+                ui.frames = 0;
+                ui.clock.restart();
+
+                ui.statsText.setString("FPS: " + std::to_string(ui.fps));
+            }
+
+            m_window.draw(ui.statsText);
             m_window.display();
         }
         else
