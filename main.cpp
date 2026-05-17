@@ -114,8 +114,8 @@ int main(int argc, char** argv)
         else if (std::strcmp(argv[i], "-p") == 0 || std::strcmp(argv[i], "--nopause") == 0) {
             noUnfocusPause = true;
         }
-        
-        else if (std::strcmp(argv[i], "-f") == 0 || std::strcmp(argv[i], "--fps") == 0) {
+
+        else if (arg == "-f" || arg == "--fps") {
             int fps;
             std::stringstream ss;
             if (i + 1 < argc && ss << argv[i + 1] && ss >> fps)
