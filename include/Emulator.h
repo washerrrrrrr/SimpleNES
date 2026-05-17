@@ -13,6 +13,16 @@
 
 extern bool noUnfocusPause;
 extern int definedFps;
+extern bool emuStats;
+
+struct emulatorStatsUI {
+    sf::Clock clock;
+    int frames = 0;
+    int fps = 0;
+
+    sf::Font font;
+    sf::Text statsText;
+};
 
 namespace sn
 {
