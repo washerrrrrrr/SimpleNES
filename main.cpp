@@ -2,9 +2,11 @@
 #include "Log.h"
 #include <sstream>
 #include <string>
+#include <thread>
 
 bool noUnfocusPause = false;
 int definedFps;
+bool emuStats;
 
 namespace sn
 {
@@ -23,8 +25,9 @@ int main(int argc, char** argv)
 
     sn::Log::get().setLevel(sn::Info);
 
-    std::string                    path;
-    std::string                    keybindingsPath = "keybindings.conf";
+    std::string path;
+    
+    std::string keybindingsPath = "keybindings.conf";
 
     // Default keybindings
     std::vector<sf::Keyboard::Key> p1 { sf::Keyboard::J, sf::Keyboard::K, sf::Keyboard::RShift, sf::Keyboard::Return,
@@ -57,6 +60,7 @@ int main(int argc, char** argv)
                       << "                       keybindings file is keybindings.conf.\n"
                       << "-p, --nopause          To stop the emulator from pausing on unfocus\n"
                       << "-f, --fps              To play with a customised max fps.\n"
+                      << "-s. --stats            This prints fps and current ROM.\n"
                       << std::endl;
             return 0;
         }
@@ -124,6 +128,9 @@ int main(int argc, char** argv)
                 LOG(sn::Error) << "Couldn't set custom fps, defaulting to vsync." << std::endl;
             ++i;
         }
+        else if (arg == "-d" || arg == "--stats"){
+            emuStats = true;
+        }
 
         else if (argv[i][0] != '-')
             path = argv[i];
@@ -140,5 +147,6 @@ int main(int argc, char** argv)
     sn::parseControllerConf(std::move(keybindingsPath), p1, p2);
     emulator.setKeys(p1, p2);
     emulator.run(path);
+
     return 0;
 }
