@@ -46,7 +46,13 @@ void Emulator::run(std::string rom_path)
     m_window.create(sf::VideoMode(NESVideoWidth * m_screenScale, NESVideoHeight * m_screenScale),
                     "SimpleNES",
                     sf::Style::Titlebar | sf::Style::Close | sf::Style::Resize);
-    m_window.setVerticalSyncEnabled(true);
+
+    
+    if (definedFps != 0 || definedFps > 0)
+        m_window.setFramerateLimit(definedFps);
+    else
+            m_window.setVerticalSyncEnabled(true);
+
     m_emulatorScreen.create(NESVideoWidth, NESVideoHeight, m_screenScale, sf::Color::White);
 
     m_lastWakeup  = high_resolution_clock::now();
@@ -120,6 +126,11 @@ void Emulator::run(std::string rom_path)
             {
                 Log::get().setLevel(InfoVerbose);
             }
+            // else if (focus && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Tab))
+            // {
+
+            // }
+
         }
 
         if (focus && !pause)
