@@ -3,6 +3,8 @@
 #include "Log.h"
 #include <time.h>
 #include <ctime>
+#include "CPU.h"
+#include <fstream>
 
 #include <chrono>
 
@@ -140,17 +142,26 @@ void Emulator::run(std::string rom_path)
             {
                 Log::get().setLevel(InfoVerbose);
             }
-            // else if (focus && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Tab))
-            // {
+            else if (focus && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Tab))
+            {
+                // LOG(Info) << m_cpu.getAreg()  << std::endl; 
+                  // Create and open a text file
+                  std::ofstream memfile("memdump.txt");
+                  std::string mem;
 
-            // }
+                  for (auto i : m_bus.getRam())
+                  mem.push_back(i);
+                  memfile << mem;
+                  memfile.close();
+
+            }
 
             else if (focus && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::F12))
             { 
                 //This took me at least 10 minutes to figure out for some reason.
                 time_t timestamp;
                 time(&timestamp); 
-                std::string screenshotName =  std::string(ctime(&timestamp)) + ".png";
+                std::string screenshotName =  std::string(ctime(&timestamp))+".png";
 
                 //Stolen screenshot code from r*ddit because i cant code.
                 sf::Vector2u window_size = m_window.getSize();
