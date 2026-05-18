@@ -72,7 +72,7 @@ void Emulator::run(std::string rom_path)
     m_audioPlayer.start();
 
     sf::Event event;
-    bool      focus = true, pause = false;
+    bool focus = true, pause = false;
     while (m_window.isOpen())
     {
 
@@ -143,7 +143,17 @@ void Emulator::run(std::string rom_path)
 
             // }
 
-
+            else if (focus && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::F12))
+            { //Stolen screenshot code from r*ddit because i cant code.
+                sf::Vector2u window_size = m_window.getSize();
+                sf::Texture sstexture;
+                sstexture.create(window_size.x, window_size.y);
+                sstexture.update(m_window);
+                sf::Image screenshot = sstexture.copyToImage();
+                if (screenshot.saveToFile("a.png")) {
+                    LOG(Info) << "Screenshot taken." << std::endl;
+                }
+            }
 
         }
 
