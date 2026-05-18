@@ -1,6 +1,8 @@
 #include "Emulator.h"
 #include "APU/Constants.h"
 #include "Log.h"
+#include <time.h>
+#include <ctime>
 
 #include <chrono>
 
@@ -144,13 +146,19 @@ void Emulator::run(std::string rom_path)
             // }
 
             else if (focus && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::F12))
-            { //Stolen screenshot code from r*ddit because i cant code.
+            { 
+                //This took me at least 10 minutes to figure out for some reason.
+                time_t timestamp;
+                time(&timestamp); 
+                std::string screenshotName =  std::string(ctime(&timestamp)) + ".png";
+
+                //Stolen screenshot code from r*ddit because i cant code.
                 sf::Vector2u window_size = m_window.getSize();
                 sf::Texture sstexture;
                 sstexture.create(window_size.x, window_size.y);
                 sstexture.update(m_window);
                 sf::Image screenshot = sstexture.copyToImage();
-                if (screenshot.saveToFile("a.png")) {
+                if (screenshot.saveToFile(screenshotName)) {
                     LOG(Info) << "Screenshot taken." << std::endl;
                 }
             }
