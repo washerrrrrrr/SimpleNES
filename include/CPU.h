@@ -52,12 +52,12 @@ public:
     Byte getYreg() { return r_Y; }
 
 
-    bool getf_c() { return r_C; }
-    bool getf_z() { return r_Z; }
-    bool getf_I() { return r_I; }
-    bool getf_D() { return r_D; }
-    bool getf_V() { return r_V; }
-    bool getf_N() { return r_N; }
+    bool getf_c() { return f_C; }
+    bool getf_z() { return f_Z; }
+    bool getf_I() { return f_I; }
+    bool getf_D() { return f_D; }
+    bool getf_V() { return f_V; }
+    bool getf_N() { return f_N; }
 
 private:
     void                  interruptSequence(InterruptType type);
