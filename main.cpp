@@ -60,7 +60,7 @@ int main(int argc, char** argv)
                       << "                       keybindings file is keybindings.conf.\n"
                       << "-p, --nopause          To stop the emulator from pausing on unfocus\n"
                       << "-f, --fps              To play with a customised max fps.\n"
-                      << "-d. --stats            This prints fps.\n"
+                      << "-d, --stats            This prints fps.\n"
                       << std::endl;
             return 0;
         }
