@@ -126,13 +126,13 @@ It can run .nes images.
                       -d, --stats            This prints a fps counter on the top left of your screen.
 ```
 When using arguments, make sure that they are in the correct order as listed in the help section e.g.
-
-./SimpleNES -p -f 
-
+```
+$ ./SimpleNES -p -f 
+```
 That works, but this does not:
-
-./SimpleNES -f -p
-
+```
+$ ./SimpleNES -f -p
+```
 Controller
 -----------------
 
