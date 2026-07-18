@@ -6,11 +6,6 @@ Roughly 50-60% of games should work (ie. games that use either no mapper or mapp
 
 ---
 
-**ARCHIVED**: I no longer have the capacity or motivation to entertain new features/issues/PRs. Feel free to fork and/or use the current build.  
-
----
-
-
 
 Examples of games that have been tested to run (but NOT limited to):
 
