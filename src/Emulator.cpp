@@ -6,26 +6,54 @@
 #include "CPU.h"
 #include <fstream>
 
+
 #include <chrono>
 
-namespace sn
-{
-using std::chrono::high_resolution_clock;
 
-Emulator::Emulator()
-  : m_cpu(m_bus)
-  , m_audioPlayer(static_cast<int>(1.0 / apu_clock_period_s.count()))
-  , m_ppu(m_pictureBus, m_emulatorScreen)
-  , m_apu(m_audioPlayer, m_cpu.createIRQHandler(), [&](Address addr) { return DMCDMA(addr); })
-  , m_bus(m_ppu, m_apu, m_controller1, m_controller2, [&](Byte b) { OAMDMA(b); })
-  , m_screenScale(3.f)
-  , m_lastWakeup()
+namespace sn {
+
+    using std::chrono::high_resolution_clock;
+
+    Emulator::Emulator()
+      : m_cpu(m_bus)
+      , m_audioPlayer(static_cast<int>(1.0 / apu_clock_period_s.count()))
+      , m_ppu(m_pictureBus, m_emulatorScreen)
+      , m_apu(m_audioPlayer, m_cpu.createIRQHandler(), [&](Address addr) { return DMCDMA(addr); })
+      , m_bus(m_ppu, m_apu, m_controller1, m_controller2, [&](Byte b) { OAMDMA(b); })
+      , m_screenScale(3.f)
+      , m_lastWakeup()
 {
     m_ppu.setInterruptCallback([&]() { m_cpu.nmiInterrupt(); });
 }
 
-void Emulator::run(std::string rom_path)
-{
+
+void Emulator::savestate() {
+        // LOG(Info) << m_cpu.getAreg()  << std::endl; 
+        // Create and open a text file
+
+        //stolen -- https://www.geeksforgeeks.org/linux-unix/create-directoryfolder-cc-program/
+        if (std::filesystem::create_directory("savestate") == -1)
+            std::cerr << "Error:  " << std::strerror(errno) << std::endl; //cerr can probably be changed.
+        else
+            LOG(Info) << "Directory Created." << std::endl;
+
+          //Creating the file, creating a memory string, finding current directory we are in..
+          std::ofstream memfile("memdump.txt");
+          std::string mem;
+          auto currDir =  std::filesystem::current_path();
+          std::filesystem::path destination = currDir / "savestate" / "memdump.txt"; 
+
+          //Writing current memory to the file
+          for (auto i : m_bus.getRam())
+          mem.push_back(i);
+          memfile << mem;
+          memfile.close();
+
+          //Copying the memory file to the new directory.
+          std::filesystem::copy_file("memfile.txt", destination, std::filesystem::copy_options::overwrite_existing);
+}
+
+void Emulator::run(std::string rom_path) {
     emulatorStatsUI ui;
 
     if (!m_cartridge.loadFromFile(rom_path))
@@ -64,7 +92,7 @@ void Emulator::run(std::string rom_path)
     m_lastWakeup  = high_resolution_clock::now();
     m_elapsedTime = m_lastWakeup - m_lastWakeup;
 
-    //For FPS and current rom
+    //For FPS
     if(emuStats) {
         ui.font.loadFromFile("/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf");
 
@@ -144,16 +172,7 @@ void Emulator::run(std::string rom_path)
             }
             else if (focus && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Tab))
             {
-                // LOG(Info) << m_cpu.getAreg()  << std::endl; 
-                  // Create and open a text file
-                  std::ofstream memfile("memdump.txt");
-                  std::string mem;
-
-                  for (auto i : m_bus.getRam())
-                  mem.push_back(i);
-                  memfile << mem;
-                  memfile.close();
-
+                savestate();
             }
 
             else if (focus && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::F12))
