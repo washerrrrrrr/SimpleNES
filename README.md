@@ -53,7 +53,7 @@ Compiling
 
 You need:
 * [SFML 2.*](#installing-sfml) development headers and library
-* C++11 compliant compiler
+* C++17 compliant compiler
 * [CMake](https://cgold.readthedocs.io/en/latest/first-step/installation.html) build system
 
 Compiling is straight forward with cmake, just run cmake on the project directory with CMAKE_BUILD_TYPE=Release
@@ -105,25 +105,25 @@ $ ./SimpleNES -w 600 ~/Games/Contra.nes
 For supported command line options, try
 ```
 $ ./SimpleNES -h
-SimpleNES is a simple NES emulator.
-It can run off .nes images.
-Set keybindings with keybindings.conf
-
-Usage: SimpleNES [options] rom-path
-
-Options:
--h, --help             Print this help text and exit
---mute-audio           Mute audio
--s, --scale            Set video scale. Default: 3.
-                       Scale of 1 corresponds to 256x240
--w, --width            Set the width of the emulation screen (height is
-                       set automatically to fit the aspect ratio)
--H, --height           Set the height of the emulation screen (width is
-                       set automatically to fit the aspect ratio)
-                       This option is mutually exclusive to --width
--C, --conf             Set the keybindings file's path. The default 
-                       keybindings file is keybindings.conf.
-
+SimpleNES is a simple NES emulator
+It can run .nes images.
+                      Set keybindings with keybindings.conf
+                      Usage: SimpleNES [options] rom-path
+                      Options:
+                      -h, --help             Print this help text and exit
+                      --mute-audio           Mute audio
+                      -s, --scale            Set video scale. Default: 3.
+                                             Scale of 1 corresponds to 256x240
+                      -w, --width            Set the width of the emulation screen (height is
+                                             set automatically to fit the aspect ratio)
+                      -H, --height           Set the height of the emulation screen (width is
+                                             set automatically to fit the aspect ratio)
+                                             This option is mutually exclusive to --width
+                      -C, --conf             Set the keybindings file's path. The default 
+                                             keybindings file is keybindings.conf.
+                      -p, --nopause          To stop the emulator from pausing on unfocus
+                      -f, --fps              To play with a customised max fps.
+                      -d, --stats            This prints a fps counter on the top left of your screen.
 ```
 
 Controller
