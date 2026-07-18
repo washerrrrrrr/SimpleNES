@@ -50,7 +50,7 @@ void Emulator::savestate() {
           memfile.close();
 
           //Copying the memory file to the new directory.
-          std::filesystem::copy_file("memfile.txt", destination, std::filesystem::copy_options::overwrite_existing);
+          std::filesystem::copy_file("memdump.txt", destination, std::filesystem::copy_options::overwrite_existing);
 }
 
 void Emulator::run(std::string rom_path) {
