@@ -125,6 +125,13 @@ It can run .nes images.
                       -f, --fps              To play with a customised max fps.
                       -d, --stats            This prints a fps counter on the top left of your screen.
 ```
+When using arguments, make sure that they are in the correct order as listed in the help section e.g.
+
+./SimpleNES -p -f 
+
+That works, but this does not:
+
+./SimpleNES -f -p
 
 Controller
 -----------------
