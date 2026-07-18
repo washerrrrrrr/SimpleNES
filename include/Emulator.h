@@ -2,7 +2,7 @@
 #define EMULATOR_H
 #include <SFML/Graphics.hpp>
 #include <chrono>
-
+#include <filesystem>
 #include "APU/APU.h"
 #include "AudioPlayer.h"
 #include "CPU.h"
@@ -10,6 +10,7 @@
 #include "MainBus.h"
 #include "PPU.h"
 #include "PictureBus.h"
+
 
 extern bool noUnfocusPause;
 extern int definedFps;
@@ -42,6 +43,7 @@ public:
     void setVideoScale(float scale);
     void setKeys(std::vector<sf::Keyboard::Key>& p1, std::vector<sf::Keyboard::Key>& p2);
     void muteAudio();
+    void savestate();
 
 
 private:
