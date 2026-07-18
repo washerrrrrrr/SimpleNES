@@ -87,7 +87,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 add_executable(SimpleNES ${SOURCES} ${VENDOR_SOURCES})
 target_link_libraries(SimpleNES PRIVATE ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})
 
-set_property(TARGET SimpleNES PROPERTY CXX_STANDARD 11)
+set_property(TARGET SimpleNES PROPERTY CXX_STANDARD 17)
 set_property(TARGET SimpleNES PROPERTY CXX_STANDARD_REQUIRED ON)
 
 target_link_libraries(SimpleNES)
