@@ -356,9 +356,9 @@ void Emulator::run(std::string rom_path, Emulator* emuAddress) {
             {
                 savestate();
             }
-            else if (focus && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::T)) { //Dont use this in release.
+            else if (focus && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::T)) { //Change to something else
                 auto game = m_cartridge;
-                loadstate(true); //Pass true for the time being. I cant get this shit to log what game is being run
+                loadstate(true); //change this as well
             }
 
             else if (focus && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::F12))
