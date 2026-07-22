@@ -65,7 +65,7 @@ int main(int argc, char** argv)
                       << "-p, --nopause          To stop the emulator from pausing on unfocus\n"
                       << "-f, --fps              To play with a customised max fps.\n"
                       << "-d, --stats            This prints fps.\n"
-                      << "-m, --memedit     This opens a memory editor window for cheats\n"
+                      << "-m, --memedit          This opens a memory editor window for cheats\n"
                       << std::endl;
             return 0;
         }
