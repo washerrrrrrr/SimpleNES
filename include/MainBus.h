@@ -42,7 +42,8 @@ public:
     void        write(Address addr, Byte value);
     bool        setMapper(Mapper* mapper);
     const Byte* getPagePtr(Byte page);
-    std::vector<Byte> getRam() { return m_RAM; }
+    std::vector<Byte>& getRam() { return m_RAM; }
+    void repl_Ram(std::vector<Byte> newVector);
 
 private:
     std::vector<Byte>         m_RAM;
