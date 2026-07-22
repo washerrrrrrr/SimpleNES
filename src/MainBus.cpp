@@ -202,4 +202,7 @@ bool MainBus::setMapper(Mapper* mapper)
 
     return true;
 }
+void MainBus::repl_Ram(std::vector<unsigned char> newVector){
+        m_RAM = newVector;
+}
 };
