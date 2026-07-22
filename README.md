@@ -126,6 +126,7 @@ It can run .nes images.
                       -p, --nopause          To stop the emulator from pausing on unfocus
                       -f, --fps              To play with a customised max fps.
                       -d, --stats            This prints a fps counter on the top left of your screen.
+                      -m, --memedit          This opens a memory editor window for cheats
 ```
 When using arguments, make sure that they are in the correct order as listed in the help section e.g.
 ```
