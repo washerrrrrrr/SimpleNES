@@ -7,11 +7,14 @@
 bool noUnfocusPause = false;
 int definedFps;
 bool emuStats;
+bool memEdit;
 
 namespace sn
 {
 void parseControllerConf(std::string filepath, std::vector<sf::Keyboard::Key>& p1, std::vector<sf::Keyboard::Key>& p2);
 }
+
+void initEmulator();
 
 int main(int argc, char** argv)
 {
@@ -35,6 +38,7 @@ int main(int argc, char** argv)
       p2 { sf::Keyboard::Numpad5, sf::Keyboard::Numpad6, sf::Keyboard::Numpad8, sf::Keyboard::Numpad9,
            sf::Keyboard::Up,      sf::Keyboard::Down,    sf::Keyboard::Left,    sf::Keyboard::Right };
     sn::Emulator emulator;
+    auto *ptr = &emulator;
 
     for (int i = 1; i < argc; ++i)
     {
@@ -61,6 +65,7 @@ int main(int argc, char** argv)
                       << "-p, --nopause          To stop the emulator from pausing on unfocus\n"
                       << "-f, --fps              To play with a customised max fps.\n"
                       << "-d, --stats            This prints fps.\n"
+                      << "-m, --memedit     This opens a memory editor window for cheats\n"
                       << std::endl;
             return 0;
         }
@@ -131,6 +136,9 @@ int main(int argc, char** argv)
         else if (arg == "-d" || arg == "--stats"){
             emuStats = true;
         }
+        else if (arg == "-m" || arg == "--memedit"){
+            memEdit = true;
+        }
 
         else if (argv[i][0] != '-')
             path = argv[i];
@@ -146,7 +154,10 @@ int main(int argc, char** argv)
 
     sn::parseControllerConf(std::move(keybindingsPath), p1, p2);
     emulator.setKeys(p1, p2);
-    emulator.run(path);
+    emulator.run(path, ptr);
+
 
     return 0;
 }
+
+
