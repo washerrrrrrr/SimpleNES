@@ -45,8 +45,9 @@ public:
     IRQHandle& createIRQHandler();
     void       setIRQPulldown(int bit, bool state);
 
+    //Getting
     // int getPC() { return r_PC }
-    Byte getSP() { return r_SP; }
+    Byte getSP()  { return r_SP; }
     Byte getAreg() { return r_A; }
     Byte getXreg() { return r_X; }
     Byte getYreg() { return r_Y; }
@@ -58,6 +59,21 @@ public:
     bool getf_D() { return f_D; }
     bool getf_V() { return f_V; }
     bool getf_N() { return f_N; }
+
+    //Replacing
+    void repl_PC(Address value) { r_PC = value; }
+    void repl_SP(Byte value) { r_SP = value; }
+    void repl_A(Byte value) { r_A = value; }
+    void repl_X(Byte value) { r_X = value; }
+    void repl_Y(Byte value) { r_Y = value; }
+
+    void repl_FC(bool value) { f_C = value; }
+    void repl_FZ(bool value) { f_Z = value; }
+    void repl_FI(bool value) { f_I = value; }
+    void repl_FD(bool value) { f_D = value; }
+    void repl_FV(bool value) { f_V = value; }
+    void repl_FN(bool value) { f_N = value; }
+
 
 private:
     void                  interruptSequence(InterruptType type);
@@ -112,3 +128,4 @@ private:
 
 };
 #endif // CPU_H
+
