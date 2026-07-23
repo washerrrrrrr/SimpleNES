@@ -77,7 +77,6 @@ public:
     void loadstate(bool isGame);
     CPU* passCPU();
 
-
 private:
     void                    OAMDMA(Byte page);
     Byte                    DMCDMA(Address addr);
