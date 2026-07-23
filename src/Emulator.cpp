@@ -27,8 +27,6 @@ namespace sn {
     m_ppu.setInterruptCallback([&]() { m_cpu.nmiInterrupt(); });
 }
 
-
-
 void Emulator::savestate() {
     sn::loadsave_State state;
         m_cpu;
@@ -38,13 +36,6 @@ void Emulator::savestate() {
             std::cerr << "Error:  " << std::strerror(errno) << std::endl; //cerr can probably be changed.
         else
             LOG(Info) << "Directory Created." << std::endl;
-
-
-        //Creating the file, creating a memory string, finding current directory we are in..
-        //std::ofstream savestateFP("savestate.txt");
-        //state.emu_Memory;
-        //auto currentDirectory = std::filesystem::current_path();
-        //state.saveDestination = currentDirectory / "savestate" / "savestate.txt"; 
 
         std::ofstream file("savestate//savestate.txt", std::ios::binary);
 
@@ -70,7 +61,6 @@ void Emulator::savestate() {
         state.F_V = m_cpu.getf_V();
         state.F_N = m_cpu.getf_N();
 
-        //state.emu_registers;
         //Apparently this way works better than what I was doing previously sooooo....
         //Passing the addresses instead
         // Registers
@@ -101,8 +91,6 @@ void Emulator::savestate() {
 
         file.close();
 
-       // std::filesystem::copy_file("savestate.txt", state.saveDestination, std::filesystem::copy_options::overwrite_existing);
-
 }
 
 void Emulator::loadstate(bool isGame) {
@@ -112,9 +100,6 @@ void Emulator::loadstate(bool isGame) {
         m_bus;
 
         std::ifstream savestateFP("savestate//savestate.txt", std::ios::binary);
-       //state.emu_Memory;
-       //auto currentDirectory = std::filesystem::current_path();
-       //state.saveDestination = currentDirectory / "savestate" / "savestate.txt"; 
         std::vector<Byte> ram;
         auto& tmp = m_bus.getRam();
 
@@ -139,76 +124,21 @@ void Emulator::loadstate(bool isGame) {
         savestateFP.read(reinterpret_cast<char*>(&state.F_V), sizeof(state.F_V));
         savestateFP.read(reinterpret_cast<char*>(&state.F_N), sizeof(state.F_N));
 
+        //Loading in memory:
+        m_bus.repl_Ram(ram); //load ram with the memory extracted from the savefile.
 
-    //     std::string lines;
-    //     std::stringstream ss(lines); 
+        m_cpu.repl_PC(state.PC);
+        m_cpu.repl_SP(state.SP);
+        m_cpu.repl_A(state.A_R);
+        m_cpu.repl_X(state.X_R);
+        m_cpu.repl_Y(state.Y_R);
+        m_cpu.repl_FC(state.F_C);
+        m_cpu.repl_FZ(state.F_Z);
+        m_cpu.repl_FI(state.F_I);
+        m_cpu.repl_FD(state.F_D);
+        m_cpu.repl_FV(state.F_V);
+        m_cpu.repl_FN(state.F_N);
 
-
-    //     int i;
-
-    //     for(i = 0; i < 128; i++) {
-    //         while (std::getline(savestateFP, lines)) {
-    //             unsigned char temp;
-    //             if (ss >> temp) { 
-    //                 std::cout << "Memory data parsed: Ok\n";
-    //                 state.v_mem.push_back(temp);
-    //             }else { LOG(Error) << "Couldn't parse correctly: " << lines << "(memdump.txt)" <<"\n";
-    //         }
-    //     }
-    //     //Loading in memory:
-           m_bus.repl_Ram(ram); //load ram with the memory extracted from the savefile.
-    //     ss.str("");
-    //     }
-
-    //     if (i == 128){
-    //         for(i < 128; i++;){
-    //                 while (std::getline(savestateFP, lines)) {
-    //                 std::stringstream ss(lines);
-                    
-    //                 state.PC = 0;
-    //                 state.SP = 0;
-    //                 state.A_R = 0;
-    //                 state.X_R = 0;
-    //                 state.Y_R = 0;
-
-    //                 state.F_C;
-    //                 state.F_Z;
-    //                 state.F_I;
-    //                 state.F_D;
-    //                 state.F_V;
-    //                 state.F_N;
-
-    //                 ss >> state.PC;
-    //                 ss >> state.SP;
-    //                 ss >> state.A_R;
-    //                 ss >> state.X_R;
-    //                 ss >> state.Y_R;
-
-    //                 ss >> state.F_C;
-    //                 ss >> state.F_Z;
-    //                 ss >> state.F_I;
-    //                 ss >> state.F_D;
-    //                 ss >> state.F_V;
-    //                 ss >> state.F_N;
-
-
-    //                 //std::cout << "Register data parsed: " << PC << " " << SP << " "  << A_R << " " << X_R << " " << Y_R
-    //                                                         // << " " << F_C << " " << F_Z << " " << F_I << " " << F_D << " " << F_V << " " << F_N << "\n";
-
-    //                    // LOG(Error) << "Couldn't parse correctly:  " << lines << "(registers.txt)" <<"\n";
-    //                 savestateFP.close();
-
-                    m_cpu.repl_PC(state.PC);
-                    m_cpu.repl_SP(state.SP);
-                    m_cpu.repl_A(state.A_R);
-                    m_cpu.repl_X(state.X_R);
-                    m_cpu.repl_Y(state.Y_R);
-                    m_cpu.repl_FC(state.F_C);
-                    m_cpu.repl_FZ(state.F_Z);
-                    m_cpu.repl_FI(state.F_I);
-                    m_cpu.repl_FD(state.F_D);
-                    m_cpu.repl_FV(state.F_V);
-                    m_cpu.repl_FN(state.F_N);
         std::cout << "PC: 0x" << std::hex << state.PC << "\n";
         std::cout << "SP: 0x" << (int)state.SP << "\n";
         std::cout << "A: 0x" << (int)state.A_R << "\n";
@@ -220,18 +150,11 @@ void Emulator::loadstate(bool isGame) {
         std::cout << "F_D: " << (bool)state.F_D << "\n";
         std::cout << "F_V: " << (bool)state.F_V << "\n";
         std::cout << "F_N: " << (bool)state.F_N << "\n";
-    //                 ss.str(""); //clear the stringstream
-    //                 }
-    //             }
-    //         }
-    //     }else {LOG(Error) << "Loadstate error: Cannot find the game mentioned in the savestate files." << std::endl; 
     }
 }
 
 void Emulator::run(std::string rom_path, Emulator* emuAddress) {
     emulatorStatsUI ui;
-
-    //auto getEmulatorAddress = emuAddress;
 
     if (!m_cartridge.loadFromFile(rom_path))
         return;
@@ -356,27 +279,33 @@ void Emulator::run(std::string rom_path, Emulator* emuAddress) {
             {
                 savestate();
             }
-            else if (focus && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::T)) { //Change to something else
-                auto game = m_cartridge;
-                loadstate(true); //change this as well
+            else if (focus && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::T)) { 
+                //auto game = m_cartridge;
+                loadstate(true); 
             }
 
             else if (focus && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::F12))
             { 
-                //This took me at least 10 minutes to figure out for some reason.
                 time_t timestamp;
-                time(&timestamp); 
+                time(&timestamp);
+
                 std::string screenshotName =  std::string(ctime(&timestamp))+".png";
+                std::filesystem::create_directory("screenshots");
+                auto screenshotDir = (std::filesystem::current_path()) / "screenshots" / screenshotName;
 
                 //Stolen screenshot code from r*ddit because i cant code.
                 sf::Vector2u window_size = m_window.getSize();
                 sf::Texture sstexture;
                 sstexture.create(window_size.x, window_size.y);
                 sstexture.update(m_window);
+
                 sf::Image screenshot = sstexture.copyToImage();
-                if (screenshot.saveToFile(screenshotName)) {
+                if (screenshot.saveToFile(screenshotDir)) {
                     LOG(Info) << "Screenshot taken." << std::endl;
                 }
+            }
+            else if (focus && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::R)){
+                m_cpu.reset();
             }
 
         }
@@ -479,5 +408,4 @@ CPU* Emulator::passCPU()
 { 
     return &m_cpu;
 }
-
 }
